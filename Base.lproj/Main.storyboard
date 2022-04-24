@@ -3,6 +3,7 @@
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -85,8 +86,8 @@
                                 <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="password"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bzy-a0-xcN">
-                                <rect key="frame" x="166" y="441" width="228" height="44"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="93" y="516" width="228" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Зарегистрироваться"/>
                                 <connections>
                                     <action selector="register:" destination="gzA-PJ-cIa" eventType="touchUpInside" id="wSY-Gt-gdp"/>
@@ -100,8 +101,10 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nbh-eA-69D">
-                                <rect key="frame" x="55" y="441" width="78" height="43"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <rect key="frame" x="168" y="416" width="78" height="43"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" name="AccentColor"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Войти"/>
                                 <connections>
                                     <action selector="loginTapped:" destination="gzA-PJ-cIa" eventType="touchUpInside" id="0uW-LK-ZUY"/>
@@ -113,6 +116,7 @@
                     </view>
                     <connections>
                         <outlet property="errorLabel" destination="abE-Ti-3Oo" id="e3S-Je-kBL"/>
+                        <outlet property="loginButton" destination="Nbh-eA-69D" id="fHE-cD-7du"/>
                         <outlet property="loginTextField" destination="gjl-eR-u18" id="giL-d9-DRV"/>
                         <outlet property="passwordTextField" destination="nzj-0i-axA" id="bOL-Vt-p74"/>
                         <segue destination="0NA-hd-XsL" kind="presentation" id="TkP-S3-RGO"/>
@@ -166,14 +170,6 @@
                                     <action selector="passChanging:" destination="0NA-hd-XsL" eventType="editingChanged" id="W5p-l2-Izv"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h70-LJ-tXH">
-                                <rect key="frame" x="133" y="378" width="149" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Зарегистрироваться"/>
-                                <connections>
-                                    <action selector="registerTapped:" destination="0NA-hd-XsL" eventType="touchUpInside" id="71j-85-DQo"/>
-                                </connections>
-                            </button>
                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6U1-bZ-YuT">
                                 <rect key="frame" x="135" y="213" width="180" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -216,6 +212,16 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h70-LJ-tXH">
+                                <rect key="frame" x="116" y="389" width="183" height="54"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" name="AccentColor"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <state key="normal" title="Зарегистрироваться"/>
+                                <connections>
+                                    <action selector="registerTapped:" destination="0NA-hd-XsL" eventType="touchUpInside" id="71j-85-DQo"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6w2-xS-Ea2"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -228,6 +234,7 @@
                         <outlet property="nameTextField" destination="7X1-G9-q7e" id="71I-Fv-Ip7"/>
                         <outlet property="password" destination="IsG-Gz-pn1" id="IHB-t9-QFi"/>
                         <outlet property="passwordTextField" destination="Yix-UV-xfu" id="rgE-Ms-hGo"/>
+                        <outlet property="registrationButton" destination="h70-LJ-tXH" id="xXS-BH-3f6"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QGn-dX-m8B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -236,6 +243,9 @@
         </scene>
     </scenes>
     <resources>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

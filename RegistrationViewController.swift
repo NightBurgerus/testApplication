@@ -1,10 +1,3 @@
-//
-//  RegistrationViewController.swift
-//  Application
-//
-//  Created by Паша Терехов on 24.04.2022.
-//
-
 import UIKit
 import CoreData
 
@@ -17,7 +10,9 @@ class RegistrationViewController: UIViewController {
     
     @IBOutlet weak var loginTextField: UITextField!
     @IBOutlet weak var login: UILabel!
-    
+
+    @IBOutlet weak var registrationButton: UIButton!
+
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var password: UILabel!
     
@@ -97,7 +92,8 @@ class RegistrationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        registrationButton.layer.cornerRadius = 10
+        registrationButton.layer.borderColor = UIColor.darkGray.cgColor
     }
 
 }

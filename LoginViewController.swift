@@ -1,20 +1,12 @@
-//
-//  LoginViewController.swift
-//  Application
-//
-//  Created by Паша Терехов on 24.04.2022.
-//
-
 import UIKit
 import CoreData
 
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var loginTextField: UITextField!
-    
     @IBOutlet weak var passwordTextField: UITextField!
-    
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var loginButton: UIButton!
     
     // Проверка логина и пароля
     @IBAction func loginTapped(_ sender: Any) {
@@ -70,7 +62,8 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        loginButton.layer.cornerRadius = 10
+        loginButton.layer.borderColor = UIColor.darkGray.cgColor
     }
     
 
