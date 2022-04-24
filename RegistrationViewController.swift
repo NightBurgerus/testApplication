@@ -9,25 +9,33 @@ import UIKit
 import CoreData
 
 class RegistrationViewController: UIViewController {
-
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var users: [NSManagedObject] = []
+    var loginIsFree = true
     
     @IBOutlet weak var nameTextField: UITextField!
     
     @IBOutlet weak var loginTextField: UITextField!
+    @IBOutlet weak var login: UILabel!
     
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var password: UILabel!
     
-    
-    @IBAction func registerTapped(_ sender: Any) {
-        if nameTextField.text!.count == 0 || loginTextField.text!.count == 0 || passwordTextField.text!.count == 0 {
-            print("Empry fields")
-            return
+    // Подсказка при вводе пароля
+    @IBAction func passChanging(_ sender: Any) {
+        if passwordTextField.text!.count < 6 {
+            passwordTextField.backgroundColor = UIColor.red
+            password.isHidden = false
+        } else {
+            passwordTextField.backgroundColor = UIColor.white
+            password.isHidden = true
         }
-        
-        var users: [NSManagedObject] = []
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    }
+    
+    // Когда логин введён, в хранилище ищется введённый логин.
+    // Если находится, пользователю выводится предупреждение
+    @IBAction func loginEntered(_ sender: Any) {
         let managedContext = appDelegate.persistentContainer.viewContext
-        
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Users")
         
         do {
@@ -39,11 +47,25 @@ class RegistrationViewController: UIViewController {
         
         for user in users {
             if user.value(forKey: "login") as! String == loginTextField.text! {
-                print("Такой пользователь уже существует")
-                return
+                login.isHidden = false
+                loginTextField.backgroundColor = UIColor.red
+                loginIsFree = false
             }
         }
+    }
+    
+    @IBAction func loginChanging(_ sender: Any) {
+        loginTextField.backgroundColor = UIColor.white
+        login.isHidden = true
+        loginIsFree = true
+    }
+    
+    @IBAction func registerTapped(_ sender: Any) {
+        if nameTextField.text!.count == 0 || loginTextField.text!.count == 0 || passwordTextField.text!.count == 0 || !loginIsFree{
+            return
+        }
         
+        let managedContext = appDelegate.persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "Users", in: managedContext)
         let user   = NSManagedObject.init(entity: entity!, insertInto: managedContext)
         
@@ -58,7 +80,7 @@ class RegistrationViewController: UIViewController {
             do {
                 try managedContext.save()
             } catch {
-                print("login (47): ", error)
+                print("Registration (47): ", error)
             }
             
             self.dismiss(animated: false, completion: nil)

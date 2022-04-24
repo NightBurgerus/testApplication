@@ -16,7 +16,7 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var errorLabel: UILabel!
     
-    
+    // Проверка логина и пароля
     @IBAction func loginTapped(_ sender: Any) {
         if loginTextField.text!.count == 0 || passwordTextField.text!.count == 0{
             errorLabel.text = "Не заполнено одно из полей"
@@ -35,7 +35,6 @@ class LoginViewController: UIViewController {
         } catch {
             print("login (34): ", error)
         }
-        
         
         var hasUser = false
         for user in users {
@@ -61,11 +60,11 @@ class LoginViewController: UIViewController {
         }
     }
     
+    // Переход на экран регистрации
     @IBAction func register(_ sender: Any) {
-        
         let registerVC = storyboard?.instantiateViewController(identifier: "RegistrationViewController")
         if let register = registerVC {
-            present(register, animated: false, completion: nil)
+            present(register, animated: true, completion: nil)
         }
     }
     override func viewDidLoad() {

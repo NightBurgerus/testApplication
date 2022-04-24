@@ -47,8 +47,16 @@ class ViewController: UIViewController {
             if loginDate == nil {
                 loginDate = Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date)
             } else {
-                if Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date) < loginDate! {
-                    loginDate = Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date)
+                // Если пользователь уже авторизовывался, берётся дата последней авторизации
+                // Иначе берётся дата регистрации
+                if user.value(forKey: "lastLoginDate") != nil {
+                    if Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date) < loginDate! {
+                        loginDate = Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date)
+                    }
+                } else {
+                    if Date().timeIntervalSince(user.value(forKey: "registrationDate") as! Date) < loginDate! {
+                        loginDate = Date().timeIntervalSince(user.value(forKey: "registrationDate") as! Date)
+                    }
                 }
             }
         }
