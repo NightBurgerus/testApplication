@@ -56,6 +56,9 @@ class LoginViewController: UIViewController {
     @IBAction func register(_ sender: Any) {
         let registerVC = storyboard?.instantiateViewController(identifier: "RegistrationViewController")
         if let register = registerVC {
+            errorLabel.text = ""
+            loginTextField.text = ""
+            passwordTextField.text = ""
             present(register, animated: true, completion: nil)
         }
     }
