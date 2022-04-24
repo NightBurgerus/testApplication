@@ -61,7 +61,7 @@ class RegistrationViewController: UIViewController {
     }
     
     @IBAction func registerTapped(_ sender: Any) {
-        if nameTextField.text!.count == 0 || loginTextField.text!.count == 0 || passwordTextField.text!.count == 0 || !loginIsFree{
+        if nameTextField.text!.count == 0 || loginTextField.text!.count == 0 || passwordTextField.text!.count == 0 || !loginIsFree || passwordTextField.text!.count < 6 {
             return
         }
         
