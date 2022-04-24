@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="17709" systemVersion="19H2" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="Logins" representedClassName="Logins" syncable="YES" codeGenerationType="class">
-        <attribute name="lastLogin" optional="YES" attributeType="String"/>
-    </entity>
     <entity name="Users" representedClassName="Users" syncable="YES" codeGenerationType="class">
         <attribute name="lastLoginDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="login" optional="YES" attributeType="String"/>
@@ -12,6 +9,5 @@
     </entity>
     <elements>
         <element name="Users" positionX="-54" positionY="-9" width="128" height="118"/>
-        <element name="Logins" positionX="-36" positionY="45" width="128" height="58"/>
     </elements>
 </model>
