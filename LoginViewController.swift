@@ -19,7 +19,7 @@ class LoginViewController: UIViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let managedContext = appDelegate.persistentContainer.viewContext
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Users")
+        var fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Users")
         
         do {
             let objects = try managedContext.fetch(fetchRequest)
@@ -31,21 +31,53 @@ class LoginViewController: UIViewController {
         var hasUser = false
         for user in users {
             if user.value(forKey: "login") as! String == loginTextField.text! && user.value(forKey: "password") as! String == passwordTextField.text! {
-                user.setValue(Date(), forKey: "lastLoginDate")
-                
-                // Сохранение изменений даты последнего входа
-                do {
-                    try managedContext.save()
-                } catch {
-                    print("login (47): ", error)
-                }
-                
                 hasUser = true
                 break
             }
         }
         
         if hasUser {
+            // Если пользователь с таким логином и паролем найден, то в сущности "Logins"
+            // необходимо обновить данные (что пользователь авторизовался: isLogin,
+            // дата последнего входа: lastLoginDate)
+            
+            fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Logins")
+            
+            do {
+                users = try managedContext.fetch(fetchRequest) as? [NSManagedObject] ?? []
+            } catch {
+                print("login (53): ", error)
+            }
+            
+            var person: NSManagedObject? = nil
+            for user in users {
+                if user.value(forKey: "login") as? String ?? "" == loginTextField.text! {
+                    person = user
+                    break
+                }
+            }
+            
+            // Если пользователь с данным логином ранее не авторизовывался,
+            // то в сущность добавляется новый объект
+            if person == nil {
+                let entity   = NSEntityDescription.entity(forEntityName: "Logins", in: managedContext)
+                person       = NSManagedObject.init(entity: entity!, insertInto: managedContext)
+                
+                person!.setValue(loginTextField.text!, forKey: "login")
+            }
+            
+            person!.setValue(Date(), forKey: "lastLoginDate")
+            person!.setValue(true, forKey: "isLogin")
+            
+            // Сохранение изменений
+            if managedContext.hasChanges {
+                do {
+                    try managedContext.save()
+                } catch {
+                    print("Main (53): ", error)
+                }
+            }
+            
             dismiss(animated: true, completion: nil)
         } else {
             errorLabel.text = "Неверный логин или пароль"
@@ -56,8 +88,8 @@ class LoginViewController: UIViewController {
     @IBAction func register(_ sender: Any) {
         let registerVC = storyboard?.instantiateViewController(identifier: "RegistrationViewController")
         if let register = registerVC {
-            errorLabel.text = ""
-            loginTextField.text = ""
+            errorLabel.text        = ""
+            loginTextField.text    = ""
             passwordTextField.text = ""
             present(register, animated: true, completion: nil)
         }
@@ -66,7 +98,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
 
         loginButton.layer.cornerRadius = 10
-        loginButton.layer.borderColor = UIColor.darkGray.cgColor
+        loginButton.layer.borderColor  = UIColor.darkGray.cgColor
     }
     
 

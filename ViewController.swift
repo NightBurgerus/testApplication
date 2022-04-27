@@ -2,69 +2,73 @@ import UIKit
 import CoreData
 
 class ViewController: UIViewController {
-
     
-    var users: [NSManagedObject] = []
+    let TIMELIMIT                     = 15.0
+    var users: [NSManagedObject]      = []
+    var loginedUser: NSManagedObject? = nil
+    let appDelegate                   = UIApplication.shared.delegate as! AppDelegate
+    
+    @IBOutlet weak var greetingLabel: UILabel!
+    @IBOutlet weak var loginButton: UIButton!
     
     // Переход к форме авторизации
     @IBAction func login(_ sender: Any) {
         let loginVC = storyboard?.instantiateViewController(identifier: "LoginViewController")
         if let login = loginVC {
+            let managedContext = appDelegate.persistentContainer.viewContext
+            loginedUser?.setValue(false, forKey: "isLogin")
+            
+            do {
+                try managedContext.save()
+            } catch {
+                print("Main (24): ", error)
+            }
+            
             present(login, animated: true, completion: nil)
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let managedContex = appDelegate.persistentContainer.viewContext
+        let managedContext = appDelegate.persistentContainer.viewContext
         
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Users")
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>.init(entityName: "Logins")
         
         do {
-            let objects = try managedContex.fetch(fetchRequest)
-            if objects.count != 0 {
-                users = objects as! [NSManagedObject]
-            }
+            users = try managedContext.fetch(fetchRequest) as? [NSManagedObject] ?? []
         } catch {
-            print("37: ", error)
+            print("Main (37): ", error)
         }
         
-        var loginDate: TimeInterval? = nil
-        
-        // Поиск наименьшего интервала с момента авторизации до текущего времени
+        // Поиск пользователя, который залогинен
+        //var loginedUser: NSManagedObject?  = nil
         for user in users {
-            if loginDate == nil {
-                loginDate = Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date)
-            } else {
-                // Если пользователь уже авторизовывался, берётся дата последней авторизации
-                // Иначе берётся дата регистрации
-                if user.value(forKey: "lastLoginDate") != nil {
-                    if Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date) < loginDate! {
-                        loginDate = Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date)
-                    }
+            if user.value(forKey: "isLogin") as? Bool ?? false {
+                if Date().timeIntervalSince(user.value(forKey: "lastLoginDate") as! Date) < TIMELIMIT {
+                    loginedUser = user
                 } else {
-                    if Date().timeIntervalSince(user.value(forKey: "registrationDate") as! Date) < loginDate! {
-                        loginDate = Date().timeIntervalSince(user.value(forKey: "registrationDate") as! Date)
-                    }
+                    user.setValue(false, forKey: "isLogin")
                 }
             }
         }
-
         
-        // Если зарегистрированных пользователей нет, либо с момента последней авторизации прошло
-        // 15 секунд, то переход на экран авторизации
-        
-        if users.count == 0  || loginDate ?? 0.0 > 15.0 {
-            let loginVC = storyboard?.instantiateViewController(identifier: "LoginViewController")
-            if let login = loginVC {
-                present(login, animated: false, completion: nil)
+        // Сохранение изменений
+        if managedContext.hasChanges {
+            do {
+                try managedContext.save()
+            } catch {
+                print("Main (53): ", error)
             }
         }
         
+        // Если залогиненного пользователя нет, открывается окно авторизации
+        if loginedUser == nil {
+            login(self)
+        } else {
+            if let name = loginedUser?.value(forKey: "login") as? String {
+                greetingLabel.text = "Привет, " + name
+            }
+            loginButton.setTitle("Выйти", for: .normal)
+        }
     }
 
 
